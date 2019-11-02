@@ -39,10 +39,7 @@ RUN docker-php-ext-install pdo_mysql intl && \
 
 COPY conf/*.ini /usr/local/etc/php/conf.d/
 
-# Install composer global
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin/ --filename=composer && \
-    mkdir /.composer
-
 WORKDIR '/app'
 CMD ["-"]
-ENTRYPOINT ["composer", "--ansi"]
+#ENTRYPOINT ["composer", "--ansi"]
+#ENTRYPOINT ["php", "--ansi"]

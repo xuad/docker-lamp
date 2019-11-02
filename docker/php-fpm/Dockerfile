@@ -1,9 +1,6 @@
 FROM php:7.3-fpm-alpine
 MAINTAINER Patrick Mosch <info@xuad.net>
 
-ARG PHP_USER_ID=999
-ARG PHP_GROUP_ID=999
-
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     PHP_XDEBUG_REMOTE_HOST=10.0.75.1 \
@@ -50,13 +47,7 @@ RUN set -x \
     && sed -i '/^;access.log/caccess.log = /var/log/php/fpm-access.log' "/usr/local/etc/php-fpm.d/www.conf" \
     && sed -i '/^;catch_workers_output/ccatch_workers_output = yes' "/usr/local/etc/php-fpm.d/www.conf" \
     && sed -i '/^;php_admin_value\[error_log\]/cphp_admin_value[error_log] = /var/log/php/fpm-error.log' "/usr/local/etc/php-fpm.d/www.conf" \
-    && sed -i '/^;php_admin_flag\[log_errors\]/cphp_admin_flag[log_errors] = on' "/usr/local/etc/php-fpm.d/www.conf" \
-    && sed -i '/^user = www-data/cuser = php-user' "/usr/local/etc/php-fpm.d/www.conf" \
-    && sed -i '/^group = www-data/cgroup = php-user' "/usr/local/etc/php-fpm.d/www.conf"
-
-# Composer
-RUN addgroup -g ${PHP_GROUP_ID} php-user && \
-    adduser -D -u ${PHP_USER_ID} -G php-user php-user
+    && sed -i '/^;php_admin_flag\[log_errors\]/cphp_admin_flag[log_errors] = on' "/usr/local/etc/php-fpm.d/www.conf"
 
 COPY conf/*.ini /usr/local/etc/php/conf.d/
 

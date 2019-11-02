@@ -1,70 +1,48 @@
 version: '3'
 services:
-  apache:
-    container_name: docker-apache
+  apache-test-local:
+    container_name: apache-test-local
     build:
       context: ./docker/apache
       dockerfile: Dockerfile
     environment:
+      VIRTUAL_HOST: test.local
       APACHE_VHOST: test.local
       APACHE_DOCUMENT_ROOT: /app/web
-      VIRTUAL_HOST: test.local
-#    networks:
-#      - docker-network
-#    depends_on:
-#      - php-fpm
-#      - mariadb
+      PHP_FPM_DOCKER_SERVICE: php-fpm-test-local
+    depends_on:
+      - php-fpm-test-local
+      - mariadb-test-local
     volumes:
       - ./:/app
       - ./data/logs/apache:/var/log/apache2
-#      - ${DOCKER_ENV_CERT_PATH}:/etc/ssl/certs:ro
 
-#  mariadb:
-#    container_name: docker-mariadb
-#    build:
-#      context: ./docker/mariadb
-#      dockerfile: Dockerfile
-#      args:
-#        - MYSQL_USER_ID=${DOCKER_ENV_USER_ID}
-#        - MYSQL_GROUP_ID=${DOCKER_ENV_GROUP_ID}
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=root
-#      - MYSQL_USER=default
-#      - MYSQL_PASSWORD=default
-#      - MYSQL_DATABASE=docker-db
-#    networks:
-#      - docker-network
-#    volumes:
-#      - ./data/mariadb:/var/lib/mysql
-#
-#  php-fpm:
-#    container_name: docker-php-fpm
-#    build:
-#      context: ./docker/php-fpm
-#      dockerfile: Dockerfile
-#      args:
-#        - PHP_USER_ID=${DOCKER_ENV_USER_ID}
-#        - PHP_GROUP_ID=${DOCKER_ENV_USER_ID}
-##    networks:
-##      - docker-network
-#    volumes:
-#      - ./:/app
-#      - ./data/logs/php:/var/log/php
-#    environment:
-#      - PHP_XDEBUG_REMOTE_HOST=10.0.75.1
-#      - PHP_XDEBUG_IDE_KEY=docker-xdebug
-#      - PHP_XDEBUG_REMOTE_PORT=9001
-#      - PHP_XDEBUG_REMOTE_ENABLE=1
+  mariadb-test-local:
+    container_name: mariadb-test-local
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test-local-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    volumes:
+      - ${pwd}/data/mariadb:/var/lib/mysql
+
+  php-fpm-test-local:
+    container_name: php-fpm-test-local
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - ./data/logs/php:/var/log/php
+    environment:
+      - PHP_XDEBUG_REMOTE_HOST=10.0.75.1
+      - PHP_XDEBUG_IDE_KEY=docker-xdebug
+      - PHP_XDEBUG_REMOTE_PORT=9001
+      - PHP_XDEBUG_REMOTE_ENABLE=1
 
 networks:
   default:
     external:
       name: nginx-proxy
-#  docker-network:
-#    driver: bridge
-
-#networks:
-#  nginx-proxy:
-#    external: true
-##  docker-contao-network:
-##    driver: bridge

@@ -1,14 +1,15 @@
 FROM alpine:latest
 
-ARG APACHE_USER_ID=999
-ARG APACHE_GROUP_ID=999
+#ARG APACHE_USER_ID=999
+#ARG APACHE_GROUP_ID=999
 
 # Environments
 ENV TERM=xterm \
     TZ=Europe/Berlin \
     APACHE_VHOST=apache.local \
     APACHE_LOG_DIR=/var/log/apache2 \
-    APACHE_DOCUMENT_ROOT=/app/public
+    APACHE_DOCUMENT_ROOT=/app/public \
+    PHP_FPM_DOCKER_SERVICE='php-fpm'
 
 # -x Print commands and their arguments as they are executed
 RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \

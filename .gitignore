@@ -1,0 +1,11 @@
+.idea
+/web/
+/vendor/
+/var/
+/templates/
+/system/
+/files/
+/data/
+/config/
+/assets/
+/composer.lock
