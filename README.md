@@ -31,6 +31,8 @@ docker build docker/php-cli -t test-local/php-cli
 ./php-cli
 ```  
 
-## Debugging
+## Debugging FPM
 1. Open PhpStorm-Settings and set debug-port: 9001
 2. Set at browser extension the xdebug-key: docker-xdebug
+
+## Debugging CLI

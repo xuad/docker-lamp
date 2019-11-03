@@ -1,34 +1,38 @@
 FROM php:7.3-cli-alpine
 
 ENV TERM=xterm \
-    TZ=Europe/Berlin
+    TZ=Europe/Berlin \
+    PHP_XDEBUG_REMOTE_HOST=10.0.75.1 \
+    PHP_XDEBUG_IDE_KEY=docker-xdebug \
+    PHP_XDEBUG_REMOTE_PORT=9001 \
+    PHP_XDEBUG_REMOTE_ENABLE=1
 
-RUN echo http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories && \
-    apk update && apk add  --no-cache \
-        bash \
-        git \
-        mysql-client \
-        curl \
-        mc \
-        libintl \
-        icu \
-        icu-dev \
-        libxml2-dev \
-        libmcrypt \
-        libmcrypt-dev \
-        freetype \
-        freetype-dev \
-        libpng \
-        libpng-dev \
-        libjpeg-turbo \
-        libjpeg-turbo-dev \
-        g++ \
-        make \
-        autoconf \
-        openssh \
+RUN apk update && apk add --no-cache \
+    bash \
+    git \
+    mysql-client \
+    curl \
+    mc \
+    libintl \
+    icu \
+    icu-dev \
+    libxml2-dev \
+    libmcrypt \
+    libmcrypt-dev \
+    freetype \
+    freetype-dev \
+    libpng \
+    libpng-dev \
+    libjpeg-turbo \
+    libjpeg-turbo-dev \
+    g++ \
+    make \
+    autoconf \
+    openssh \
     && rm /var/cache/apk/*
 
-RUN docker-php-ext-configure gd \
+RUN pecl install xdebug && \
+    docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ && \
@@ -41,5 +45,3 @@ COPY conf/*.ini /usr/local/etc/php/conf.d/
 
 WORKDIR '/app'
 CMD ["-"]
-#ENTRYPOINT ["composer", "--ansi"]
-#ENTRYPOINT ["php", "--ansi"]
