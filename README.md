@@ -34,5 +34,6 @@ docker build docker/php-cli -t test-local/php-cli
 ## Debugging FPM
 1. Open PhpStorm-Settings and set debug-port: 9001
 2. Set at browser extension the xdebug-key: docker-xdebug
+3. You became a message to configure server: ServerName and Host is docker-xdebug. Port 80
 
 ## Debugging CLI

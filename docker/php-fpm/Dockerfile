@@ -3,7 +3,7 @@ MAINTAINER Patrick Mosch <info@xuad.net>
 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
-    PHP_XDEBUG_REMOTE_HOST=10.0.75.1 \
+    PHP_XDEBUG_REMOTE_HOST=docker.for.win.localhost \
     PHP_XDEBUG_IDE_KEY=docker-xdebug \
     PHP_XDEBUG_REMOTE_PORT=9001 \
     PHP_XDEBUG_REMOTE_ENABLE=1
